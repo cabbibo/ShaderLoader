@@ -30,14 +30,9 @@
 
       var shaders = new ShaderLoader( '../shaders' , '../shaderChunks' );
 
-      var shadersToLoad = 2;
-      shaders.endLoad = function(){
-
-        if( shaders.shadersLoaded == shadersToLoad ){
-          init();
-          animate();
-        }
-
+      shaders.shaderSetLoaded = function(){
+        init();
+        animate();
       }
 
       shaders.load( 'vs-displacement' , 'displacement' , 'vertex' );

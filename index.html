@@ -14,10 +14,18 @@
         position:absolute;
         top:0px;
         left:0px;
-        padding:10px;
         color:#c0ffee;
-
+        padding: 20px 5%;
+        width: 90%;
       }
+
+      .fullCode{
+        background-color: rgba(255,255,255,.2);
+        width: 90%;
+        display: inline-block;
+        margin-left: 5%;
+      }
+
       h1{
         width:100%;
         border-bottom:1px solid #c0ffee;
@@ -65,38 +73,38 @@
       </div>
       <h1 id="basic-usage">Basic Usage</h1>
       <p>Include the neccesary scripts. Currently ShaderLoader uses jquery for AJAX calls. Sorry about that...</p>
-      <pre><code>
+      <pre><code class="fullCode">
       &lt;script src=&quot;path/to/ShaderLoader.js&quot;&gt;&lt;/script&gt;
       &lt;script src=&quot;path/to/jquery.min.js&quot;&gt;&lt;/script&gt;
       </code></pre>
 
       <p>Initialize the ShaderLoader:</p>
-      <pre><code>
+      <pre><code class="fullCode">
       var pathToShaders = 'path/to/shaders';
       var pathToChunks  = 'path/to/chunks';
       var shaders = new ShaderLoader( pathToShaders , pathToChunks );
       </code></pre>
 
       <p>Create your shaders!</p>
-      <pre><code>
+      <pre><code class="fullCode">
       var vertShader  = shaders.load( 'vert.js' , 'VERT'  , 'vertex'      );
       var fragShader  = shaders.load( 'frag.js' , 'FRAG'  , 'fragment'    );
       var simShader   = shaders.load( 'sim.js'  , 'SIM'   , 'simulation'  );
       </code></pre>
 
       <p>Once they are loaded they will become part of the <code>shaders</code> object,</p>
-      <pre><code>
+      <pre><code class="fullCode">
       var vert  = shaders.vertexShaders.VERT;
       var frag  = shaders.fragmentShaders.FRAG;
       var sim   = shaders.simulationShaders.SIM;
       </code></pre>
 
       <a href="http://github.com/cabbibo/ShaderLoader"> Link to Repo! </a>
-      
+     
       <h1 id="more-info">More Info</h1>
       <h2 id="using-shader-chunks">Using Shader Chunks</h2>
       <p>When creating a shader, you can add function defines that come from different files. It is important to note that ShaderLoader will look for the shader in the 'pathToChunks' directory. </p>
-      <pre><code>
+      <pre><code class="fullCode">
       // Inside frag.js
       varying vec3 vPos;
 
@@ -119,16 +127,17 @@
       functions, to do what you need for your loading needs.</p>
       <p>Remember that you can also access the total number of shaders that the ShaderLoader 
       has loaded by accessing the <code>shadersLoaded</code> attribute.</p>
+      <p>Additionally, everytime a new shader is loaded, the attribute <code>shadersToLoad</code> is incremented.</p>
+      <p>As well, if you want to, there is a function called <code>shaderSetLoaded</code> that you can change, 
+      which is called called when <code>this.shadersToLoad == this.shadersLoaded</code> .
+      This function works perfectly if you are loading all your shaders at once, but can get a bit hairy
+      if you are doing tso in different parts of your program</p>
       <p>For example, if I want to wait until all the shaders are loaded to initialize my scene, I might do the following:</p>
-      <pre><code>
+      <pre><code class="fullCode">
       var shaders = new ShaderLoader( 'pathTo/Shaders' , 'pathTo/Chunks' );
 
-      var shadersToLoad = 3;
-
-      shaders.endLoad = function(){
-        if( this.shadersLoaded == shadersToLoad ){
-          init();
-        }
+      shaders.shaderSetLoaded = function(){
+        init();
       }
 
       shaders.load( 'frag.js' , 'FRAGMORTION' , 'fragment'    );
@@ -137,7 +146,7 @@
 
       // All Our Fancy Scene Stuff
       function init(){}
-      </code></pre>
+      </code></pre> 
       <a href="http://github.com/cabbibo/ShaderLoader"> Link to Repo! </a>
       
     </div>

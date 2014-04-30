@@ -167,7 +167,9 @@
     if( this.shadersLoaded == this.shadersToLoad ){
       this.shaderSetLoaded();
     }
+    
     this.endLoad( shaderText , title , type  );
+
   }
 
   ShaderLoader.prototype.shaderSetLoaded = function(){}

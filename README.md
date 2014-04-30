@@ -81,17 +81,20 @@ functions, to do what you need for your loading needs.
 Remember that you can also access the total number of shaders that the ShaderLoader 
 has loaded by accessing the `shadersLoaded` attribute.
 
+Additionally, everytime a new shader is loaded, the attribute `shadersToLoad` is incremented.
+
+As well, if you want to, there is a function called `shaderSetLoaded` that you can change, 
+which is called called when `this.shadersToLoad == this.shadersLoaded` .
+This function works perfectly if you are loading all your shaders at once, but can get a bit hairy
+if you are doing tso in different parts of your program
+
 For example, if I want to wait until all the shaders are loaded to initialize my scene, I might do the following:
 
 ```
 var shaders = new ShaderLoader( 'pathTo/Shaders' , 'pathTo/Chunks' );
 
-var shadersToLoad = 3;
-
-shaders.endLoad = function(){
-  if( this.shadersLoaded == shadersToLoad ){
-    init();
-  }
+shaders.shaderSetLoaded = function(){
+  init();
 }
 
 shaders.load( 'frag.js' , 'FRAGMORTION' , 'fragment'    );

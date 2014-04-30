@@ -41,14 +41,9 @@
 
       var shaders = new ShaderLoader( '../shaders' );
 
-      var shadersToLoad = 2;
-      shaders.endLoad = function(){
-
-        if( shaders.shadersLoaded == shadersToLoad ){
-          init();
-          animate();
-        }
-
+      shaders.shaderSetLoaded = function(){
+        init();
+        animate();
       }
 
       shaders.load( 'vs-ads' , 'ads' , 'vertex' );
