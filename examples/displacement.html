@@ -18,10 +18,10 @@
 
 
       var uniforms = {
-
+        time:{type:"f",value:0}
       }
 
-      var camera, renderer, scene , controls;
+      var camera, renderer, scene , controls, clock;
       
       var vs, fs;
 
@@ -47,6 +47,8 @@
 
         var w = window.innerWidth;
         var h = window.innerHeight;
+
+        clock = new THREE.Clock();
 
         camera = new THREE.PerspectiveCamera( 65 , w/h , 1 , 2000 );
         camera.position.z = 1000;
@@ -79,6 +81,8 @@
       function animate(){
 
         requestAnimationFrame( animate );
+        
+        uniforms.time.value += clock.getDelta();
         controls.update();
         renderer.render( scene , camera );
       }
