@@ -14,7 +14,7 @@
     this.shaderChunks = {};
 
     this.shadersLoaded = 0;
-   // this.loadShaderChunks( pathToChunks );
+    this.shadersToLoad = 0;
 
   }
 
@@ -157,13 +157,19 @@
 
   // might add something later...
   ShaderLoader.prototype._beginLoad = function(  shader , title , type  ){
+    this.shadersToLoad ++;
     this.beginLoad( shader , title , type  );
   }
   
   ShaderLoader.prototype._endLoad = function( shaderText , title , type ){
     this.shadersLoaded ++;
+
+    if( this.shadersLoaded == this.shadersToLoad ){
+      this.shaderSetLoaded();
+    }
     this.endLoad( shaderText , title , type  );
   }
 
+  ShaderLoader.prototype.shaderSetLoaded = function(){}
   ShaderLoader.prototype.endLoad = function(){}
   ShaderLoader.prototype.beginLoad = function(){}
