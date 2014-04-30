@@ -163,8 +163,15 @@
   
   ShaderLoader.prototype._endLoad = function( shaderText , title , type ){
     this.shadersLoaded ++;
+
+    if( this.shadersLoaded == this.shadersToLoad ){
+      this.shaderSetLoaded();
+    }
+    
     this.endLoad( shaderText , title , type  );
+
   }
 
+  ShaderLoader.prototype.shaderSetLoaded = function(){}
   ShaderLoader.prototype.endLoad = function(){}
   ShaderLoader.prototype.beginLoad = function(){}
