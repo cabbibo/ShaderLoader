@@ -5,6 +5,7 @@ varying float vDisplacement;
 void main(){
 
 
-  gl_FragColor = vec4( vDisplacement , .5 , .5 , 1.0 );
+
+  gl_FragColor = vec4( abs(vDisplacement * vNorm) , 1.0 );
 
 }
