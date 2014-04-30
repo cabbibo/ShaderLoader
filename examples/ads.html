@@ -41,10 +41,11 @@
 
       var shaders = new ShaderLoader( '../shaders' );
 
-      var shadersToLoad = 2;
       shaders.endLoad = function(){
 
-        if( shaders.shadersLoaded == shadersToLoad ){
+        console.log( shaders.shadersToLoad );
+        console.log( shaders.shadersLoaded );
+        if( shaders.shadersLoaded == shaders.shadersToLoad ){
           init();
           animate();
         }
