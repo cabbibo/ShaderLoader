@@ -66,11 +66,19 @@
           uniforms:uniforms,
           vertexShader:   shaders.vertexShaders.displacement,
           fragmentShader: shaders.fragmentShaders.displacement,
+          side: THREE.DoubleSide
 
         });
        
         mesh = new THREE.Mesh( geometry, material );
         scene.add( mesh );
+
+        var skybox = mesh.clone();
+
+        skybox.scale.multiplyScalar( 8 );
+        scene.add( skybox);
+
+
 
         renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
@@ -109,7 +117,6 @@
       function initControls(){
 
         controls.connect();
-
 
       }
 
