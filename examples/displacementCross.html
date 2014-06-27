@@ -41,6 +41,8 @@
       shaders.load( 'vs-displacement' , 'displacement' , 'vertex' );
       shaders.load( 'fs-displacement' , 'displacement' , 'fragment' );
 
+      //document.body.requestFullscreen();
+
       function init(){
 
         var w = window.innerWidth;
@@ -75,6 +77,19 @@
         effect = new THREE.StereoEffect( renderer );
         effect.setSize( window.innerWidth, window.innerHeight );
         effect.separation = 90;
+
+       
+        if( renderer.domElement.requestFullscreen) {
+          renderer.domElement.requestFullscreen();
+        } else if (renderer.domElement.msRequestFullscreen) {
+          renderer.domElement.msRequestFullscreen();
+        } else if (renderer.domElement.mozRequestFullScreen) {
+          renderer.domElement.mozRequestFullScreen();
+        } else if (renderer.domElement.webkitRequestFullscreen) {
+          renderer.domElement.webkitRequestFullscreen();
+        }
+        
+       // renderer.domElement.requestFullscreen();
 
         document.body.appendChild( renderer.domElement );
         
