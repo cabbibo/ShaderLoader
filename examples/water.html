@@ -1,0 +1,103 @@
+<html>
+
+  <head>
+    <style>
+      body{ margin: 0px; }
+    </style>
+  </head>
+
+  <body>
+
+    <script src="lib/three.min.js"></script>
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/TrackballControls.js"></script>
+    
+    <script src="../ShaderLoader.js"></script>
+
+    <script>
+
+
+      var uniforms = {
+        time:{type:"f",value:0},
+        lightPos:{type:"v3",value:new THREE.Vector3(1,1,1)}
+      }
+
+      var camera, renderer, scene , controls, clock;;
+      
+      var vs, fs;
+
+      var geometry, material , light;
+
+
+      var shaders = new ShaderLoader( '../shaders' , '../shaderChunks' );
+
+      shaders.shaderSetLoaded = function(){
+        init();
+        animate();
+      }
+
+      shaders.load( 'vs-water' , 'water' , 'vertex' );
+      shaders.load( 'fs-water' , 'water' , 'fragment' );
+
+      function init(){
+
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+
+        clock = new THREE.Clock();
+
+        camera = new THREE.PerspectiveCamera( 65 , w/h , 1 , 2000 );
+        camera.position.z = 200;
+        camera.position.y = 60;
+
+        controls = new THREE.TrackballControls( camera );
+        scene = new THREE.Scene();
+
+      
+        geometry = new THREE.PlaneGeometry( 800, 800 , 300 , 300 );
+        geometry.computeVertexNormals();
+        
+        material = new THREE.ShaderMaterial({
+
+          uniforms:uniforms,
+          vertexShader:   shaders.vertexShaders.water,
+          fragmentShader: shaders.fragmentShaders.water,
+
+        });
+       
+        mesh = new THREE.Mesh( geometry, material );
+        mesh.rotation.x = -Math.PI/2;
+        mesh.rotation.z = Math.PI/2;
+        scene.add( mesh );
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+        window.addEventListener( 'resize', onResize , false );
+        
+        document.body.appendChild( renderer.domElement );
+
+      }
+
+      function animate(){
+
+        requestAnimationFrame( animate );
+        
+        uniforms.time.value += clock.getDelta();
+        controls.update();
+        renderer.render( scene , camera );
+      }
+
+      function onResize() {
+        windowHalfX = window.innerWidth / 2;
+        windowHalfY = window.innerHeight / 2;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+
+    </script>
+
+  </body>
+</html>
