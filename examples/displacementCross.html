@@ -95,7 +95,8 @@
           
         } , false);
        
-        
+
+        window.addEventListener('deviceorientation', initControls, false);
        // renderer.domElement.requestFullscreen();
 
         document.body.appendChild( renderer.domElement );
@@ -103,6 +104,15 @@
         window.addEventListener( 'resize', onWindowResize, false );
 
       }
+
+
+      function initControls(){
+
+        controls.connect();
+
+
+      }
+
 
       function onWindowResize() {
 
