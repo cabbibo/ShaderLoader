@@ -11,6 +11,7 @@
     <script src="lib/three.min.js"></script>
     <script src="lib/jquery.min.js"></script>
     <script src="lib/TrackballControls.js"></script>
+    <script src="lib/DeviceOrientationControls.js"></script>
     <script src="lib/StereoEffect.js"></script>
     
     <script src="../ShaderLoader.js"></script>
@@ -53,7 +54,7 @@
         camera = new THREE.PerspectiveCamera( 65 , w/h , 1 , 2000 );
         camera.position.z = 1000;
 
-        controls = new THREE.TrackballControls( camera );
+        controls = new THREE.DeviceOrientationControls( camera, true);
         scene = new THREE.Scene();
 
       
