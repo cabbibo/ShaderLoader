@@ -11,30 +11,43 @@ varying vec3 vNorm;
 varying vec3 vEye;
 varying vec3 vCam;
 
+varying vec3 diffuse;
+
+varying mat3 vNormMat;
 
 void main(){
 
   vec4 matcap = texture2D( t_matcap , vSEM );
 
   vec3 tCol = vec3( 0. );
+  float d = 0.;
 
   for( int i = 0; i < lights; i++ ){
 
-    vec3 lightDir = normalize( lightPositions[ i ] - vMPos.xyz );
+    vec3 lightDir = normalize(lightPositions[ i ]- vMPos.xyz );
     vec3 camDir = normalize( vCam - vMPos.xyz );
+    vec3 n = normalize( vNorm );
 
-    vec3 c = lightColors[ i ];
+    float diffuse = max( 0., dot( n, lightDir ) );
+    //d += diffuse;
 
 
-    vec3 r = reflect( normalize(lightDir) , normalize(vNorm) );
+   // tCol += .1 * diffuse * lightColors[ i ];
 
-    float eyeMatch =max( 0.  ,dot(normalize( camDir) , normalize( -r) ));
+    if( diffuse != 0. ) {
+      vec3 c = lightColors[ i ];
 
-    tCol += pow(eyeMatch, 100. )*c;
+      vec3 r = reflect( normalize(lightDir) , normalize(vNorm) );
 
+      float eyeMatch =max( 0.  ,dot( normalize( -r), normalize( camDir) ));
+
+      tCol += pow(eyeMatch, 10. )*c;
+
+
+    }
   }
  
-  gl_FragColor = vec4( tCol , 1. ); //vec4( tCol * matcap.xyz , 1. );
+  gl_FragColor = matcap * vec4( tCol , 1. ); //vec4( tCol * matcap.xyz , 1. );
 
 
 }
