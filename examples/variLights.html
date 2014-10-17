@@ -137,6 +137,11 @@
 
       function animate(){
 
+        mesh.rotation.x += .002;
+        mesh.rotation.y += .003;
+        mesh.rotation.z += .005;
+
+
         requestAnimationFrame( animate );
         controls.update();
         renderer.render( scene , camera );

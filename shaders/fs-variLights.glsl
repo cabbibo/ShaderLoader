@@ -34,7 +34,7 @@ void main(){
 
    // tCol += .1 * diffuse * lightColors[ i ];
 
-    if( diffuse != 0. ) {
+    if( diffuse > 0. ) {
       vec3 c = lightColors[ i ];
 
       vec3 r = reflect( normalize(lightDir) , normalize(vNorm) );
