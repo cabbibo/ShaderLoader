@@ -70,8 +70,22 @@
       <h1> Examples </h1>
       <div id ="examples">
         <a href="examples/ads.html">Ambient Diffuse Specular Demo</a><br/>
-        <a href="examples/displacement.html">Simplex Noise Displacement Demo</a>
+        <a href="examples/displacement.html">Simplex Noise Displacement Demo</a><br/>
+        <a href="examples/sem.html">Spherical Enviornment Mapping</a><br/>
+        <a href="examples/rainbow.html">Rainbow</a>
       </div>
+
+      <h1> Demos using ShaderLoader </h1>
+      <div id ="examples">
+        <a href="http://cabbi.bo/webby/"> Webby </a><br/>
+        <a href="http://cabbi.bo/Skull/"> Skull </a><br/>
+        <a href="http://cabbi.bo/MagicalBoy/"> Magical Boy</a><br/>
+        <a href="http://cabbi.bo/weirdkids/"> Weird Kids </a><br/>
+        <a href="http://cabbi.bo/diamonds/"> Gimme Some </a><br/>
+        <a href="http://cabbi.bo/huldra/"> Huldra </a><br/>
+        <a href="http://cabbi.bo/beacon/"> Beacon </a><br/>
+      </div>
+
       <h1 id="basic-usage">Basic Usage</h1>
       <p>Include the neccesary scripts. Currently ShaderLoader uses jquery for AJAX calls. Sorry about that...</p>
       <pre><code class="fullCode">
@@ -196,13 +210,19 @@
 
     <script src="examples/lib/three.min.js"></script>
     <script src="examples/lib/jquery.min.js"></script>
+    <script src="examples/lib/SubdivisionModifier.js"></script>
     <script src="ShaderLoader.js"></script>
 
     <script>
 
 
+      var displace , sem , rainbow;
+
+      var matcap = THREE.ImageUtils.loadTexture('examples/img/rough-aluminium.jpg');
+
       var uniforms = {
-        time:{type:"f",value:0}
+        time:{type:"f",value:0},
+        t_matcap:{ type:"t" , value: matcap }
       }
 
       var camera, renderer, scene , clock;
@@ -214,18 +234,19 @@
 
       var shaders = new ShaderLoader( 'shaders' , 'shaderChunks' );
 
-      var shadersToLoad = 2;
-      shaders.endLoad = function(){
-
-        if( shaders.shadersLoaded == shadersToLoad ){
-          init();
-          animate();
-        }
-
-      }
-
       shaders.load( 'vs-displacement' , 'displacement' , 'vertex' );
       shaders.load( 'fs-displacement' , 'displacement' , 'fragment' );
+      shaders.load( 'vs-sem' , 'sem' , 'vertex' );
+      shaders.load( 'fs-sem' , 'sem' , 'fragment' );
+      shaders.load( 'vs-rainbow' , 'rainbow' , 'vertex' );
+      shaders.load( 'fs-rainbow' , 'rainbow' , 'fragment' );
+
+      shaders.shaderSetLoaded = function(){
+
+        init();
+        animate();
+
+      }
 
       function init(){
 
@@ -237,7 +258,7 @@
         clock = new THREE.Clock();
 
         camera = new THREE.PerspectiveCamera( 65 , w/h , 1 , 2000 );
-        camera.position.z = 1000;
+        camera.position.z = 500;
 
         scene = new THREE.Scene();
       
@@ -251,9 +272,62 @@
           fragmentShader: shaders.fragmentShaders.displacement,
 
         });
-       
-        mesh = new THREE.Mesh( geometry, material );
-        scene.add( mesh );
+
+
+        displace = new THREE.Mesh( geometry, material );
+
+        var modifier = new THREE.SubdivisionModifier( 3 );
+
+        geometry = new THREE.BoxGeometry( 200, 200 , 200 , 10 , 10 , 10 );
+        geometry.computeVertexNormals();
+
+        geometry.mergeVertices();
+        geometry.computeFaceNormals();
+        geometry.computeVertexNormals();
+
+        modifier.modify( geometry );
+        
+        material = new THREE.ShaderMaterial({
+
+          uniforms:       uniforms,
+          vertexShader:   shaders.vertexShaders.rainbow,
+          fragmentShader: shaders.fragmentShaders.rainbow,
+
+        });
+
+        rainbow = new THREE.Mesh( geometry,  material );
+
+        rainbow.rotation.y = Math.PI / 4;
+        var modifier = new THREE.SubdivisionModifier( 4 );
+
+        geometry = new THREE.BoxGeometry( 200, 200 , 200  );
+        geometry.computeVertexNormals();
+
+        geometry.mergeVertices();
+        geometry.computeFaceNormals();
+        geometry.computeVertexNormals();
+
+        modifier.modify( geometry );
+        
+        material = new THREE.ShaderMaterial({
+
+          uniforms:       uniforms,
+          vertexShader:   shaders.vertexShaders.sem,
+          fragmentShader: shaders.fragmentShaders.sem,
+
+        });
+
+        sem = new THREE.Mesh( geometry,  material );
+
+        var r = Math.random();
+
+        if( r < .3 ){
+          scene.add( rainbow );
+        }else if( r > .3 && r < .6 ){
+          scene.add( sem );
+        }else{
+          scene.add( displace );
+        }
 
         renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
@@ -261,7 +335,9 @@
 
         var mousewheel = function( e ){
 
-          mesh.rotation.x += e.wheelDeltaY / 1000;
+          sem.rotation.x += e.wheelDeltaY / 1000;
+          rainbow.rotation.x += e.wheelDeltaY / 1000;
+          displace.rotation.x += e.wheelDeltaY / 1000;
         
         }
       

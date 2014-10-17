@@ -3,7 +3,7 @@ varying vec3 vPos;
 
 void main(){
 
-  vNorm = normal;
+  vNorm = normalMatrix * normal;
   vPos  = position;
 
   vec4 mvPos = modelViewMatrix * vec4( position, 1.0 );
