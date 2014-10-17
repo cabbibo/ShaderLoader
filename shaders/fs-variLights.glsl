@@ -9,6 +9,8 @@ varying vec2 vSEM;
 varying vec4 vMPos;
 varying vec3 vNorm;
 varying vec3 vEye;
+varying vec3 vCam;
+
 
 void main(){
 
@@ -18,20 +20,17 @@ void main(){
 
   for( int i = 0; i < lights; i++ ){
 
-    vec3 p = lightPositions[ i ];
+    vec3 lightDir = normalize( lightPositions[ i ] - vMPos.xyz );
+    vec3 camDir = normalize( vCam - vMPos.xyz );
+
     vec3 c = lightColors[ i ];
 
-    vec3 d = vMPos.xyz - p;
 
-    vec3 r = reflect( normalize(d) , normalize(vNorm) );
+    vec3 r = reflect( normalize(lightDir) , normalize(vNorm) );
 
-    float eyeMatch = dot( normalize( vEye) , normalize( r) );
+    float eyeMatch =max( 0.  ,dot(normalize( camDir) , normalize( -r) ));
 
-    float dt = max( 0. , dot( normalize(vNorm) , normalize(d) ));
-
-    float val = min( 1. , pow((5. / length( d )),2.) );
-
-    tCol += pow(eyeMatch, 180. )*c;
+    tCol += pow(eyeMatch, 100. )*c;
 
   }
  
