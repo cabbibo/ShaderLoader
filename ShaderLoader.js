@@ -8,6 +8,10 @@
     this.vertexShaders      = {};
     this.simulationShaders  = {};
 
+    this.fs = this.fragmentShaders;
+    this.vs = this.vertexShaders;
+    this.ss = this.simulationShaders;
+
     this.pathToShaders    = pathToShaders || "/" ;
     this.pathToChunks     = pathToChunks || pathToShaders;
 
@@ -41,7 +45,7 @@
   */
   ShaderLoader.prototype.loadShaderChunk = function( type ){
 
-    var path = this.pathToChunks + "/" + type + ".js";
+    var path = this.pathToChunks + "/" + type + ".glsl";
 
     var self = this;
     $.ajax({
@@ -83,7 +87,7 @@
 
     // request the file over AJAX
     $.ajax({
-      url: self.pathToShaders +"/" + shader + ".js" ,
+      url: self.pathToShaders +"/" + shader + ".glsl" ,
       dataType: 'text',
       context: {
         type: type 
@@ -170,6 +174,23 @@
     
     this.endLoad( shaderText , title , type  );
 
+  }
+
+
+  ShaderLoader.prototype.setValue = function( shader , name , value ){
+
+    //console.log( name , value );
+
+    var a = '@'+name;
+    //console.log( a );
+   
+    var replaced = false;
+
+    var newStr = shader.replace( a , function(token){replaced = true; return value;}); 
+
+    console.log( 'replaced' , replaced );
+    return newStr;
+  
   }
 
   ShaderLoader.prototype.shaderSetLoaded = function(){}

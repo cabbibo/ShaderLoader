@@ -88,9 +88,9 @@
 
       <p>Create your shaders!</p>
       <pre><code class="fullCode">
-      var vertShader  = shaders.load( 'vert.js' , 'VERT'  , 'vertex'      );
-      var fragShader  = shaders.load( 'frag.js' , 'FRAG'  , 'fragment'    );
-      var simShader   = shaders.load( 'sim.js'  , 'SIM'   , 'simulation'  );
+      var vertShader  = shaders.load( 'vert.glsl' , 'VERT'  , 'vertex'      );
+      var fragShader  = shaders.load( 'frag.glsl' , 'FRAG'  , 'fragment'    );
+      var simShader   = shaders.load( 'sim.glsl'  , 'SIM'   , 'simulation'  );
       </code></pre>
 
       <p>Once they are loaded they will become part of the <code>shaders</code> object,</p>
@@ -106,10 +106,10 @@
       <h2 id="using-shader-chunks">Using Shader Chunks</h2>
       <p>When creating a shader, you can add function defines that come from different files. It is important to note that ShaderLoader will look for the shader in the 'pathToChunks' directory. </p>
       <pre><code class="fullCode">
-      // Inside frag.js
+      // Inside frag.glsl
       varying vec3 vPos;
 
-      // Will look for simplex.js in the 'pathToChunks' directory
+      // Will look for simplex.glsl in the 'pathToChunks' directory
       $simplex
 
       void main(){
@@ -141,9 +141,9 @@
         init();
       }
 
-      shaders.load( 'frag.js' , 'FRAGMORTION' , 'fragment'    );
-      shaders.load( 'vert.js' , 'VERTICAL'    , 'vertex'      );
-      shaders.load( 'sim.js'  , 'SIMULACRA'   , 'simulation'  );
+      shaders.load( 'frag.glsl' , 'FRAGMORTION' , 'fragment'    );
+      shaders.load( 'vert.glsl' , 'VERTICAL'    , 'vertex'      );
+      shaders.load( 'sim.glsl'  , 'SIMULACRA'   , 'simulation'  );
 
       // All Our Fancy Scene Stuff
       function init(){}

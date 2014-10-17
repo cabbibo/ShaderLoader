@@ -30,9 +30,9 @@ var shaders = new ShaderLoader( pathToShaders , pathToChunks );
 Create your shaders!
 
 ```
-var vertShader  = shaders.load( 'vert.js' , 'VERT'  , 'vertex'      );
-var fragShader  = shaders.load( 'frag.js' , 'FRAG'  , 'fragment'    );
-var simShader   = shaders.load( 'sim.js'  , 'SIM'   , 'simulation'  );
+var vertShader  = shaders.load( 'vert.glsl' , 'VERT'  , 'vertex'      );
+var fragShader  = shaders.load( 'frag.glsl' , 'FRAG'  , 'fragment'    );
+var simShader   = shaders.load( 'sim.glsl'  , 'SIM'   , 'simulation'  );
 ```
 
 
@@ -49,16 +49,51 @@ NOW GO MAKE SOME PRETTY SHIT!
 More Info
 =====
 
+Shorthand
+----
+
+If you are as lazy as me, you hate writing fragmentShader possibly even more than I do. Because of this, there is some shorthand. Also it makes for neatly aligned vertical lines
+
+```
+// After code is loaded
+
+var vert = shaders.vs.VERT;
+var frag = shaders.fs.FRAG;
+var sim  = shaders.ss.SIM;
+
+```
+
+
 Using Shader Chunks
 ----
 
 When creating a shader, you can add function defines that come from different files. It is important to note that ShaderLoader will look for the shader in the 'pathToChunks' directory. 
 
 ```
-// Inside frag.js
+// Inside frag.glsl
 varying vec3 vPos;
 
-// Will look for simplex.js in the 'pathToChunks' directory
+// Will look for simplex.glsl in the 'pathToChunks' directory
+$simplex
+
+void main(){
+
+  float noise = simplex( vPos );
+  gl_FragColor = vec4( noise , 1.0 );
+
+}
+```
+
+Replacing Text Inside Shaders
+----
+
+Sometimes when you have a shader, you will want to replace text, so that the shader knows a bit more about the actual object it is working with. This is especially important when you are doing simulations, so that each particle knows about every other particle. Because you cannot use uniforms to change the length of for loops in glsl, you need to specifically define it. ShaderLoader offers you the ability to do this.
+
+```
+// Inside frag.glsl
+varying vec3 vPos;
+
+// Will look for simplex.glsl in the 'pathToChunks' directory
 $simplex
 
 void main(){
@@ -97,9 +132,9 @@ shaders.shaderSetLoaded = function(){
   init();
 }
 
-shaders.load( 'frag.js' , 'FRAGMORTION' , 'fragment'    );
-shaders.load( 'vert.js' , 'VERTICAL'    , 'vertex'      );
-shaders.load( 'sim.js'  , 'SIMULACRA'   , 'simulation'  );
+shaders.load( 'frag.glsl' , 'FRAGMORTION' , 'fragment'    );
+shaders.load( 'vert.glsl' , 'VERTICAL'    , 'vertex'      );
+shaders.load( 'sim.glsl'  , 'SIMULACRA'   , 'simulation'  );
 
 // All Our Fancy Scene Stuff
 function init(){}
