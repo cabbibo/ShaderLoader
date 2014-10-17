@@ -103,6 +103,19 @@
       <a href="http://github.com/cabbibo/ShaderLoader"> Link to Repo! </a>
      
       <h1 id="more-info">More Info</h1>
+
+      <h2 id="shorthand">Shorthand</h2>
+      <p>If you are as lazy as me, you hate writing fragmentShader possibly even more than I do. Because of this, there is some shorthand. Also it makes for neatly aligned vertical lines</p>
+      <pre><code>// After code is loaded
+
+      var vert = shaders.vs.VERT;
+      var frag = shaders.fs.FRAG;
+      var sim  = shaders.ss.SIM;
+
+      </code></pre>
+      
+      <a href="http://github.com/cabbibo/ShaderLoader"> Link to Repo! </a>
+  
       <h2 id="using-shader-chunks">Using Shader Chunks</h2>
       <p>When creating a shader, you can add function defines that come from different files. It is important to note that ShaderLoader will look for the shader in the 'pathToChunks' directory. </p>
       <pre><code class="fullCode">
@@ -120,6 +133,32 @@
       }
       </code></pre>
 
+      <a href="http://github.com/cabbibo/ShaderLoader"> Link to Repo! </a>
+      
+      <h2 id="replacing-text-inside-shaders">Replacing Text Inside Shaders</h2>
+      <p>Sometimes when you have a shader, you will want to replace text, so that the shader knows a bit more about the actual object it is working with. This is especially important when you are doing simulations, so that each particle knows about every other particle. Because you cannot use uniforms to change the length of for loops in glsl, you need to specifically define it. To do this, all you need to do is provide a 'hook' inside of your shader using the '@' symbol</p>
+      <pre><code>// Inside sim.glsl
+      const int size  = @SIZE;
+
+      </code></pre>
+
+      <p>Than, later in your code, when you know what you want the size to be, change it by using:</p>
+      <pre><code>var st = 1;
+      var s = shaders.setValue( shaders.ss.SIM , 'SIZE' , st );
+      </code></pre>
+
+      <p>Remember that because of the fact that you need a '.' for floats, you may have to do something such as</p>
+      <pre><code>
+      // Inside sim.glsl
+      const float size  = @SIZE;
+
+      // Inside index.html
+      var st = 1 + &quot;.&quot;;
+      var s = shaders.setValue( shaders.ss.SIM , 'SIZE' , st );
+
+      </code></pre>
+
+      <p>If you have any ideas on how to make this better, let me know!!!</p>
       <a href="http://github.com/cabbibo/ShaderLoader"> Link to Repo! </a>
       
       <h2 id="loading">Loading</h2>

@@ -87,22 +87,37 @@ void main(){
 Replacing Text Inside Shaders
 ----
 
-Sometimes when you have a shader, you will want to replace text, so that the shader knows a bit more about the actual object it is working with. This is especially important when you are doing simulations, so that each particle knows about every other particle. Because you cannot use uniforms to change the length of for loops in glsl, you need to specifically define it. ShaderLoader offers you the ability to do this.
+Sometimes when you have a shader, you will want to replace text, so that the shader knows a bit more about the actual object it is working with. This is especially important when you are doing simulations, so that each particle knows about every other particle. Because you cannot use uniforms to change the length of for loops in glsl, you need to specifically define it. To do this, all you need to do is provide a 'hook' inside of your shader using the '@' symbol
 
 ```
-// Inside frag.glsl
-varying vec3 vPos;
+// Inside sim.glsl
+const int size  = @SIZE;
 
-// Will look for simplex.glsl in the 'pathToChunks' directory
-$simplex
-
-void main(){
-
-  float noise = simplex( vPos );
-  gl_FragColor = vec4( noise , 1.0 );
-
-}
 ```
+
+Than, later in your code, when you know what you want the size to be, change it by using:
+
+```
+var st = 1;
+var s = shaders.setValue( shaders.ss.SIM , 'SIZE' , st );
+```
+
+Remember that because of the fact that you need a '.' for floats, you may have to do something such as
+
+
+```
+  
+// Inside sim.glsl
+const float size  = @SIZE;
+
+// Inside index.html
+var st = 1 + ".";
+var s = shaders.setValue( shaders.ss.SIM , 'SIZE' , st );
+
+```
+
+If you have any ideas on how to make this better, let me know!!!
+
 
 
 
