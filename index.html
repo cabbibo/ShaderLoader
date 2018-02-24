@@ -236,7 +236,8 @@
 
       var displace , sem , rainbow;
 
-      var matcap = THREE.ImageUtils.loadTexture('examples/img/rough-aluminium.jpg');
+      var textureLoader = new THREE.TextureLoader();
+      var matcap = textureLoader.load('examples/img/rough-aluminium.jpg');
 
       var uniforms = {
         time:{type:"f",value:0},
