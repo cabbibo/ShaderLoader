@@ -12,11 +12,10 @@ out of shader files.
 Basic Usage
 =====
 
-Include the neccesary scripts. Currently ShaderLoader uses jquery for AJAX calls. Sorry about that...
+Include the neccesary script.
 
 ```
 <script src="path/to/ShaderLoader.js"></script>
-<script src="path/to/jquery.min.js"></script>
 ```
 
 Initialize the ShaderLoader:
