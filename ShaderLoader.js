@@ -20,6 +20,8 @@
     this.shadersLoaded = 0;
     this.shadersToLoad = 0;
 
+    this.loader = new THREE.FileLoader();
+
   }
 
 
@@ -48,21 +50,19 @@
     var path = this.pathToChunks + "/" + type + ".glsl";
 
     var self = this;
-    $.ajax({
-      url:path,
-      dataType:'text',
-      context:{
-        title:type,
-        path: path
+
+    self.loader.load(path,
+      function( data ){
+        self.onChunkLoaded( data, type );
       },
-      complete: function( r ){
-        self.onChunkLoaded( r.responseText , this.title );
+      function( xhr ){
+        // on progress
       },
-      error:function( r ){
-        console.log( 'ERROR: Unable to Load Shader' + this.path );
-        self.onChunkLoaded( " NO SHADER LOADED " , this.title );
+      function( error ){
+        console.log( 'ERROR: Unable to Load Shader' + path );
+        self.onChunkLoaded( " NO SHADER LOADED " , type );
       }
-    });
+    );
 
   }
   
@@ -84,18 +84,11 @@
 
     this._beginLoad(  shader , title , type );
 
-
-    // request the file over AJAX
-    $.ajax({
-      url: self.pathToShaders +"/" + shader + ".glsl" ,
-      dataType: 'text',
-      context: {
-        type: type 
-      },
-      complete: function(r){
-        self.onShaderLoaded( r.responseText , title , this.type );
+    self.loader.load(self.pathToShaders +"/" + shader + ".glsl",
+      function(data){
+        self.onShaderLoaded( data, title, type );
       }
-    });
+    );
 
   }
 

@@ -48,7 +48,7 @@
 
       @font-face {
         font-family: "GeoSans";
-        src: url("examples/lib/GeosansLight.ttf");
+        src: url("examples/font/GeosansLight.ttf");
       }
     </style>
   </head>
@@ -226,9 +226,9 @@
 
 
 
-    <script src="examples/lib/three.min.js"></script>
-    <script src="examples/lib/jquery.min.js"></script>
-    <script src="examples/lib/SubdivisionModifier.js"></script>
+
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r90/build/three.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r90/examples/js/modifiers/SubdivisionModifier.js"></script>
     <script src="ShaderLoader.js"></script>
 
     <script>
@@ -236,7 +236,8 @@
 
       var displace , sem , rainbow;
 
-      var matcap = THREE.ImageUtils.loadTexture('examples/img/rough-aluminium.jpg');
+      var textureLoader = new THREE.TextureLoader();
+      var matcap = textureLoader.load('examples/img/rough-aluminium.jpg');
 
       var uniforms = {
         time:{type:"f",value:0},
